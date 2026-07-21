@@ -20,7 +20,7 @@ public class Usuario {
     private String nome;
 
     @Column(nullable = false, unique = true)
-    @Email
+    @Email(message = "Digite um email válido!")
     private String email;
 
     // por padrão, o Java trata de enums como ordinais com o @Enumerated(EnumType.STRING) ele passa a tratar como uma String
