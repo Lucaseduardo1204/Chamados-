@@ -2,9 +2,8 @@ package com.lucas.chamados.controller;
 
 import com.lucas.chamados.model.Usuario;
 import com.lucas.chamados.repository.UsuarioRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +26,14 @@ public class UsuarioController {
     public List<Usuario> listarTodos(){
         // .findAll() - método padrão do JpaRepository
         return repository.findAll();
+    }
+
+    //PostMapping - responde ao verbo POST em /usuarios, o que criará um novo recurso
+    @PostMapping
+    // @RequestBody - pega o JSON que chega no corpo da requisição e converte para objeto Usuario
+    // @Valid = dispara as validações (Ex: @Email no campo de email da entity)
+    public Usuario criar(@RequestBody @Valid Usuario usuario){
+        //Faz o insert
+        return repository.save(usuario);
     }
 }
