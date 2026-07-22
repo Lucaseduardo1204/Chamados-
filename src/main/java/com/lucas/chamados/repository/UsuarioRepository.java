@@ -1,6 +1,6 @@
 package com.lucas.chamados.repository;
 
-import com.lucas.chamados.model.Usuario;
+import com.lucas.chamados.model.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {

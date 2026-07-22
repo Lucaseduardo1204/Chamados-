@@ -1,11 +1,9 @@
-package com.lucas.chamados.model;
+package com.lucas.chamados.model.entity;
 
 import com.lucas.chamados.model.enums.Fundacao;
 import com.lucas.chamados.model.enums.TipoUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "usuarios")

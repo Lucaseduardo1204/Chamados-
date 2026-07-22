@@ -1,6 +1,6 @@
 package com.lucas.chamados.controller;
 
-import com.lucas.chamados.model.Usuario;
+import com.lucas.chamados.model.entity.Usuario;
 import com.lucas.chamados.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
