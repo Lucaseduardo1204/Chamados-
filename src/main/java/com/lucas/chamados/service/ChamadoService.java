@@ -3,6 +3,7 @@ package com.lucas.chamados.service;
 import com.lucas.chamados.dto.ChamadoRequestDTO;
 import com.lucas.chamados.dto.ChamadoResponseDTO;
 import com.lucas.chamados.dto.UsuarioResumoDTO;
+import com.lucas.chamados.exception.ChamadoNaoEncontradoException;
 import com.lucas.chamados.exception.UsuarioNaoEncontradoException;
 import com.lucas.chamados.model.entity.Chamado;
 import com.lucas.chamados.model.entity.Usuario;
@@ -81,6 +82,16 @@ public class ChamadoService {
         List<Chamado>  listaDeChamados = chamadoRepository.findAll();
 
         return listaDeChamados.stream().map(this::converterEntityParaDto).toList();
+    }
+
+    //Recebe o id por parametro (id vem do controller)
+    public ChamadoResponseDTO listarPorId(Long id){
+        //variavel chamado que armazena o resultado da busca do chamadoRepository pelo id, se não encontrar
+        // lança a exceção ChamadoNaoEncontrado que recebe o id para mostrar no log
+        var chamado = chamadoRepository.findById(id).orElseThrow(() -> new ChamadoNaoEncontradoException(id));
+
+        // Converte a entity pra DTO e retorna pro controller
+        return converterEntityParaDto(chamado);
     }
 
 

@@ -5,6 +5,7 @@ import com.lucas.chamados.dto.ChamadoResponseDTO;
 import com.lucas.chamados.model.entity.Chamado;
 import com.lucas.chamados.service.ChamadoService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +25,20 @@ public class ChamadoController {
 
     }
 
+    @GetMapping("{id}")
+    public ChamadoResponseDTO listarPorid(@PathVariable Long id){
+        return chamadoService.listarPorId(id);
+
+    }
+
     @PostMapping
     public ChamadoResponseDTO criarChamado(@RequestBody @Valid ChamadoRequestDTO chamado){
 
+        // se der certo retorna o DTO no body da resposta
         return chamadoService.novoChamado(chamado);
     }
+
+
 
 //    O DTO nunca passa do service pra baixo. A Entity nunca sobe além do service.
 }

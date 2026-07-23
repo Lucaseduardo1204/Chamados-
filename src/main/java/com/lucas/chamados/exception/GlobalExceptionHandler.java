@@ -56,5 +56,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
     }
 
+    // Captura a exceção da classe ChamadoNaoEncontradoException
+    @ExceptionHandler(ChamadoNaoEncontradoException.class)
+    // Retorna uma ResponseEntity de um map com chave e um valor, recebe por parâmetro a exception
+    public ResponseEntity<Map<String, String>> chamadoNaoEncontrado(ChamadoNaoEncontradoException ex){
+        // Define uma tabela hash de String, String
+        Map<String, String> erros = new HashMap<>();
+
+        // inclui na tabela hash com erro e nenhum chamado encontrado
+        erros.put("erro", ex.getMessage());
+
+        // inputa no log do servidor o log do erro seguido de qual id que gerou o mesmo
+        log.error("chamado não encontrado", ex);
+
+        // Retorna uma ResponseEntity com o status code de NotFound (404) com a tabela hash de erros no
+        // body
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
+    }
+
+
 
 }
