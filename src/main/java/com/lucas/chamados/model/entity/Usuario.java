@@ -21,8 +21,8 @@ public class Usuario {
     @Email(message = "Digite um email válido!")
     private String email;
 
-    // por padrão, o Java trata de enums como ordinais com o @Enumerated(EnumType.STRING) ele passa a tratar como uma String
-    // senão guardaria a posição (0,1,2), e reordenar o enum corromperia os dados históricos
+    // por padrão, o Java trata de enums como ordinais com o @Enumerated(EnumType.STRING) ele passa a tratar como uma
+    // String senão guardaria a posição (0,1,2), e reordenar o enum corromperia os dados históricos
     @Enumerated(EnumType.STRING)
     // no banco = tipo_usuario, na classe tipoUsuario, portanto é necessário mapea-lo com a coluna do banco
     @Column(name = "tipo_usuario", nullable = false)
@@ -33,9 +33,9 @@ public class Usuario {
     private Fundacao fundacao;
 
 
-    //Exigido pelo jpa para executar o sql por traz dos panos, o framework precisa criar instâncias sem conhecer previamente
-    // os valores das propriedades, ele depende desse contrutor padrão para inicialiizar a classe antes de preencher seus atributos
-    // pode ser public ou protected
+    // Exigido pelo jpa para executar o sql por traz dos panos, o framework precisa criar instâncias sem conhecer
+    // previamente os valores das propriedades, ele depende desse contrutor padrão para inicialiizar a classe antes
+    // de preencher seus atributos pode ser public ou protected
     public Usuario(){}
 
     public Usuario(String nome, String email, TipoUsuario tipoUsuario, Fundacao fundacao){

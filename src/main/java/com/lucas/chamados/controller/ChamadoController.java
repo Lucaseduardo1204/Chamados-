@@ -1,7 +1,9 @@
 package com.lucas.chamados.controller;
 
+import com.lucas.chamados.dto.ChamadoRequestDTO;
+import com.lucas.chamados.dto.ChamadoResponseDTO;
 import com.lucas.chamados.model.entity.Chamado;
-import com.lucas.chamados.repository.ChamadoRepository;
+import com.lucas.chamados.service.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +12,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/chamados")
 public class ChamadoController {
-    private final ChamadoRepository repository;
+    private final ChamadoService chamadoService;
 
-    public ChamadoController(ChamadoRepository repository){
-        this.repository = repository;
+    public ChamadoController(ChamadoService chamadoService){
+        this.chamadoService = chamadoService;
     }
 
     @GetMapping()
-    public List<Chamado> listarTodos(){
-        return repository.findAll();
+    public List<ChamadoResponseDTO> listarTodos(){
+       return  chamadoService.listarTodos();
 
     }
 
     @PostMapping
-    public Chamado criarChamado(@RequestBody @Valid Chamado chamado){
-        return repository.save(chamado);
+    public ChamadoResponseDTO criarChamado(@RequestBody @Valid ChamadoRequestDTO chamado){
+
+        return chamadoService.novoChamado(chamado);
     }
 
+//    O DTO nunca passa do service pra baixo. A Entity nunca sobe além do service.
 }

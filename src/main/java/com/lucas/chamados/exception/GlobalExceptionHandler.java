@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-// - RestControllerAdvice - intercepta exceções de TODOS os controllers em um único lugar - tratador global, toda exceção que
-// sair de um controller, passa por ele. (Um catch que cobre a aplicação toda e não só um método)
+// - RestControllerAdvice - intercepta exceções de TODOS os controllers em um único lugar - tratador global, toda
+// exceção que sair de um controller, passa por ele. (Um catch que cobre a aplicação toda e não só um método)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -27,7 +28,8 @@ public class GlobalExceptionHandler {
         Map<String, String> erros = new HashMap<>();
 
         // pra cada campo que falhar, pega o nome do campo e a mensagem limpa
-        ex.getBindingResult().getFieldErrors().forEach(erro -> erros.put(erro.getField(), erro.getDefaultMessage()));
+        ex.getBindingResult().getFieldErrors().forEach(erro -> erros.put(erro.getField(),
+                erro.getDefaultMessage()));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
     }
@@ -42,6 +44,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
     }
 
+    //.NoSuchElementException
+
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> tratarMensagemUserNotFound(UsuarioNaoEncontradoException ex){
+        Map<String, String> erros = new HashMap<>();
+
+        erros.put("erro", "Nenhum usuário encontrado");
+        log.error("Usuário não encontrado", ex);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
+    }
 
 
 }

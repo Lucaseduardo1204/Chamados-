@@ -4,6 +4,8 @@ import com.lucas.chamados.model.enums.PrioridadeEnum;
 import com.lucas.chamados.model.enums.SituacaoEnum;
 import com.lucas.chamados.model.enums.TipoEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -63,7 +65,7 @@ public class Chamado {
 
     public  Chamado (){}
 
-    public Chamado(SituacaoEnum situacao, PrioridadeEnum prioridade, TipoEnum tipo, String sistema, String resumo, String descricao, Usuario solicitanteId, Usuario responsavelId) {
+    public Chamado(SituacaoEnum situacao, PrioridadeEnum prioridade, TipoEnum tipo, String sistema, String resumo, String descricao, Usuario solicitanteId) {
         this.situacao = situacao;
         this.prioridade = prioridade;
         this.tipo = tipo;
@@ -71,8 +73,8 @@ public class Chamado {
         this.resumo = resumo;
         this.descricao = descricao;
         this.solicitante = solicitanteId;
-        this.responsavel = responsavelId;
     }
+
 
     public Long getId() {
         return id;
