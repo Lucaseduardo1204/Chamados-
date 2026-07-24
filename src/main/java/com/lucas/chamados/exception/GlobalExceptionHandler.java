@@ -83,6 +83,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
 
+    @ExceptionHandler(SituacaoNaoPermitida.class)
+    public ResponseEntity<Map<String, String>> situacaoNaoPermitida(SituacaoNaoPermitida ex){
+        Map<String, String> erros = new HashMap<>();
+
+        erros.put("erro", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
+    }
+
 
 
 }

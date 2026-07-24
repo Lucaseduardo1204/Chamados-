@@ -1,10 +1,8 @@
 package com.lucas.chamados.service;
 
-import com.lucas.chamados.dto.AlterarResponsavelDTO;
-import com.lucas.chamados.dto.ChamadoRequestDTO;
-import com.lucas.chamados.dto.ChamadoResponseDTO;
-import com.lucas.chamados.dto.UsuarioResumoDTO;
+import com.lucas.chamados.dto.*;
 import com.lucas.chamados.exception.ChamadoNaoEncontradoException;
+import com.lucas.chamados.exception.SituacaoNaoPermitida;
 import com.lucas.chamados.exception.UsuarioDiferenteAnalista;
 import com.lucas.chamados.exception.UsuarioNaoEncontradoException;
 import com.lucas.chamados.model.entity.Chamado;
@@ -108,7 +106,7 @@ public class ChamadoService {
         var responsavelAtribuido = usuarioRepository.findById(novoResponsavel.id()).orElseThrow(() -> new UsuarioNaoEncontradoException(novoResponsavel.id()));
 
         // Se o tipo do responsavelAtribuido for diferente de analista, lança exception com a mensagem que o responsavel deve ser analista
-        if (!responsavelAtribuido.getTipoUsuario().equals(TipoUsuario.ANALISTA)){
+        if (!(responsavelAtribuido.getTipoUsuario() == TipoUsuario.ANALISTA)){
             throw new UsuarioDiferenteAnalista(responsavelAtribuido.getId());
         }
 
@@ -118,6 +116,23 @@ public class ChamadoService {
         Chamado chamadoSalvo = chamadoRepository.save(chamado);
 
         return converterEntityParaDto(chamadoSalvo);
+    }
+
+    @Transactional
+    public ChamadoResponseDTO alterarSituacao(Long idChamado, AlterarSituacaoDTO novaSituacao){
+        var chamado = chamadoRepository.findById(idChamado).orElseThrow(() -> new ChamadoNaoEncontradoException(idChamado));
+
+        if (chamado.getSituacao() == SituacaoEnum.FECHADA){
+            throw new SituacaoNaoPermitida();
+
+        }
+
+        chamado.setSituacao(novaSituacao.situacao());
+
+        Chamado salvo =  chamadoRepository.save(chamado);
+
+        return converterEntityParaDto(salvo);
+
     }
 
 

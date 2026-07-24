@@ -1,6 +1,7 @@
 package com.lucas.chamados.controller;
 
 import com.lucas.chamados.dto.AlterarResponsavelDTO;
+import com.lucas.chamados.dto.AlterarSituacaoDTO;
 import com.lucas.chamados.dto.ChamadoRequestDTO;
 import com.lucas.chamados.dto.ChamadoResponseDTO;
 import com.lucas.chamados.service.ChamadoService;
@@ -38,11 +39,17 @@ public class ChamadoController {
     }
 
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/responsavel")
     // alterarResponsavel devolve um ChamadoResponseDTO por parametro ele recebe o id vindo da url e o id do novo responsavel pelo requestbody
     public  ChamadoResponseDTO alterarResponsavel(@PathVariable("id") Long idChamado, @RequestBody @Valid AlterarResponsavelDTO novoResponsavel){
 
         return chamadoService.alterarResponsavel(idChamado, novoResponsavel);
+    }
+
+    @PatchMapping("/{id}/situacao")
+    public ChamadoResponseDTO alterarSituacao(@PathVariable("id") Long idChamado, @RequestBody @Valid AlterarSituacaoDTO novaSituacao){
+
+        return chamadoService.alterarSituacao(idChamado, novaSituacao);
     }
 
 
