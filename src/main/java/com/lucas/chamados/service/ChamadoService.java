@@ -1,13 +1,16 @@
 package com.lucas.chamados.service;
 
+import com.lucas.chamados.dto.AlterarResponsavelDTO;
 import com.lucas.chamados.dto.ChamadoRequestDTO;
 import com.lucas.chamados.dto.ChamadoResponseDTO;
 import com.lucas.chamados.dto.UsuarioResumoDTO;
 import com.lucas.chamados.exception.ChamadoNaoEncontradoException;
+import com.lucas.chamados.exception.UsuarioDiferenteAnalista;
 import com.lucas.chamados.exception.UsuarioNaoEncontradoException;
 import com.lucas.chamados.model.entity.Chamado;
 import com.lucas.chamados.model.entity.Usuario;
 import com.lucas.chamados.model.enums.SituacaoEnum;
+import com.lucas.chamados.model.enums.TipoUsuario;
 import com.lucas.chamados.repository.ChamadoRepository;
 import com.lucas.chamados.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -92,6 +95,29 @@ public class ChamadoService {
 
         // Converte a entity pra DTO e retorna pro controller
         return converterEntityParaDto(chamado);
+    }
+
+    @Transactional
+    // alterar responsavel é o metodo que devolverá um chamadoResponseDTO, ele recebe por parametro o id do chamado e o
+    // id do novoResponsavel presente no AlterarResponsavelDTO
+    public ChamadoResponseDTO alterarResponsavel(Long idChamado, AlterarResponsavelDTO novoResponsavel){
+        // Variavel chamado busca o chamado pelo id, se não encontrar lança a exception, e se encontrar armazena na variável chamado
+        var chamado = chamadoRepository.findById(idChamado).orElseThrow(() -> new ChamadoNaoEncontradoException(idChamado));
+
+        // busca o responsavel pelo id, se encontrar atribui na variavel responsavel atribuido, se não lança exceção
+        var responsavelAtribuido = usuarioRepository.findById(novoResponsavel.id()).orElseThrow(() -> new UsuarioNaoEncontradoException(novoResponsavel.id()));
+
+        // Se o tipo do responsavelAtribuido for diferente de analista, lança exception com a mensagem que o responsavel deve ser analista
+        if (!responsavelAtribuido.getTipoUsuario().equals(TipoUsuario.ANALISTA)){
+            throw new UsuarioDiferenteAnalista(responsavelAtribuido.getId());
+        }
+
+        // Somente chama o setResponsavel e altera o responsavel
+        chamado.setResponsavel(responsavelAtribuido);
+
+        Chamado chamadoSalvo = chamadoRepository.save(chamado);
+
+        return converterEntityParaDto(chamadoSalvo);
     }
 
 

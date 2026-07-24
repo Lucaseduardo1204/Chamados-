@@ -1,11 +1,10 @@
 package com.lucas.chamados.controller;
 
+import com.lucas.chamados.dto.AlterarResponsavelDTO;
 import com.lucas.chamados.dto.ChamadoRequestDTO;
 import com.lucas.chamados.dto.ChamadoResponseDTO;
-import com.lucas.chamados.model.entity.Chamado;
 import com.lucas.chamados.service.ChamadoService;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class ChamadoController {
 
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ChamadoResponseDTO listarPorid(@PathVariable Long id){
         return chamadoService.listarPorId(id);
 
@@ -36,6 +35,14 @@ public class ChamadoController {
 
         // se der certo retorna o DTO no body da resposta
         return chamadoService.novoChamado(chamado);
+    }
+
+
+    @PatchMapping("/{id}")
+    // alterarResponsavel devolve um ChamadoResponseDTO por parametro ele recebe o id vindo da url e o id do novo responsavel pelo requestbody
+    public  ChamadoResponseDTO alterarResponsavel(@PathVariable("id") Long idChamado, @RequestBody @Valid AlterarResponsavelDTO novoResponsavel){
+
+        return chamadoService.alterarResponsavel(idChamado, novoResponsavel);
     }
 
 

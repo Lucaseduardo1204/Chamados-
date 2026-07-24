@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> tratarMensagemUserNotFound(UsuarioNaoEncontradoException ex){
         Map<String, String> erros = new HashMap<>();
 
-        erros.put("erro", "Nenhum usuário encontrado");
+        erros.put("erro", ex.getMessage());
         log.error("Usuário não encontrado", ex);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
@@ -72,6 +72,15 @@ public class GlobalExceptionHandler {
         // Retorna uma ResponseEntity com o status code de NotFound (404) com a tabela hash de erros no
         // body
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
+    }
+
+    @ExceptionHandler(UsuarioDiferenteAnalista.class)
+    public ResponseEntity<Map<String, String>> usuarioDiferenteAnalista(UsuarioDiferenteAnalista ex){
+        Map<String, String> erros = new HashMap<>();
+
+        erros.put("erro", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
 
 
