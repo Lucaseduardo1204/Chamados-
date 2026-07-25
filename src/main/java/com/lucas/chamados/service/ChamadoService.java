@@ -159,14 +159,16 @@ public class ChamadoService {
 
         Interacao novaInteracao = new Interacao(chamado, autor, interacao.texto());
 
+
+
         Interacao interacaoSalva = interacaoRepository.save(novaInteracao);
 
 
-        return converterInteracaoEntityParaDTO(autor, interacaoSalva);
+        return converterInteracaoEntityParaDTO(interacaoSalva);
 
     }
 
-    public InteracaoResponseDTO converterInteracaoEntityParaDTO(Usuario usuario, Interacao interacao){
+    public InteracaoResponseDTO converterInteracaoEntityParaDTO(Interacao interacao){
         return new InteracaoResponseDTO(
                 interacao.getId(),
                 converterUsuario(interacao.getAutor()),
@@ -176,5 +178,15 @@ public class ChamadoService {
     }
 
 
+
+    public List<InteracaoResponseDTO> listarInteracoes(Long id){
+
+        var chamado = chamadoRepository.findById(id).orElseThrow(() -> new ChamadoNaoEncontradoException(id));
+        var interacoes = interacaoRepository.findByChamadoIdOrderByDataHoraAsc(id);
+
+        return interacoes.stream().map(this::converterInteracaoEntityParaDTO).toList();
+
+
+    }
 
 }

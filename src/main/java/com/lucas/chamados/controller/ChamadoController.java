@@ -59,7 +59,10 @@ public class ChamadoController {
         return chamadoService.adicionarInteracao(chamadoId, interacao);
     }
 
-
+    @GetMapping("/{id}/interacoes")
+    public List<InteracaoResponseDTO> listarInteracoes(@PathVariable Long id){
+        return chamadoService.listarInteracoes(id);
+    }
 
 
 

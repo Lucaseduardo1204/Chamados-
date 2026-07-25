@@ -4,10 +4,12 @@ import com.lucas.chamados.model.enums.PrioridadeEnum;
 import com.lucas.chamados.model.enums.SituacaoEnum;
 import com.lucas.chamados.model.enums.TipoEnum;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,7 +76,6 @@ public class Chamado {
         this.descricao = descricao;
         this.solicitante = solicitanteId;
     }
-
 
     public Long getId() {
         return id;
