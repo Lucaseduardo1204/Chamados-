@@ -4,12 +4,11 @@ import com.lucas.chamados.model.enums.PrioridadeEnum;
 import com.lucas.chamados.model.enums.SituacaoEnum;
 import com.lucas.chamados.model.enums.TipoEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -62,6 +61,7 @@ public class Chamado {
     @ManyToOne
     @JoinColumn(name = "responsavel_id")
     private Usuario responsavel;
+
 
     public  Chamado (){}
 
@@ -151,4 +151,6 @@ public class Chamado {
     public void setResponsavel(Usuario responsavelId) {
         this.responsavel = responsavelId;
     }
+
 }
+

@@ -91,6 +91,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
     }
 
+    @ExceptionHandler(ComentarioNaoPermitidoException.class)
+    public ResponseEntity<Map<String, String>> comentarioNaoPeritido(ComentarioNaoPermitidoException ex){
+        Map<String, String> erros = new HashMap<>();
+
+        erros.put("erro", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
+    }
+
 
 
 }

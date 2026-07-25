@@ -1,9 +1,6 @@
 package com.lucas.chamados.controller;
 
-import com.lucas.chamados.dto.AlterarResponsavelDTO;
-import com.lucas.chamados.dto.AlterarSituacaoDTO;
-import com.lucas.chamados.dto.ChamadoRequestDTO;
-import com.lucas.chamados.dto.ChamadoResponseDTO;
+import com.lucas.chamados.dto.*;
 import com.lucas.chamados.service.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -40,17 +37,29 @@ public class ChamadoController {
 
 
     @PatchMapping("/{id}/responsavel")
-    // alterarResponsavel devolve um ChamadoResponseDTO por parametro ele recebe o id vindo da url e o id do novo responsavel pelo requestbody
-    public  ChamadoResponseDTO alterarResponsavel(@PathVariable("id") Long idChamado, @RequestBody @Valid AlterarResponsavelDTO novoResponsavel){
+    // alterarResponsavel devolve um ChamadoResponseDTO por parametro ele recebe o id vindo da url e o id do novo
+    // responsavel pelo requestbody
+    public  ChamadoResponseDTO alterarResponsavel(@PathVariable("id") Long idChamado,
+                                                  @RequestBody @Valid AlterarResponsavelDTO novoResponsavel){
 
         return chamadoService.alterarResponsavel(idChamado, novoResponsavel);
     }
 
     @PatchMapping("/{id}/situacao")
-    public ChamadoResponseDTO alterarSituacao(@PathVariable("id") Long idChamado, @RequestBody @Valid AlterarSituacaoDTO novaSituacao){
+    public ChamadoResponseDTO alterarSituacao(@PathVariable("id") Long idChamado,
+                                              @RequestBody @Valid AlterarSituacaoDTO novaSituacao){
 
         return chamadoService.alterarSituacao(idChamado, novaSituacao);
     }
+
+    @PostMapping("/{id}/interacoes")
+    public InteracaoResponseDTO adicionarInteracao(@PathVariable("id") Long chamadoId,
+                                                   @RequestBody @Valid InteracaoRequestDTO interacao){
+
+        return chamadoService.adicionarInteracao(chamadoId, interacao);
+    }
+
+
 
 
 
