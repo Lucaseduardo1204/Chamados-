@@ -10,8 +10,10 @@ import com.lucas.chamados.model.enums.TipoUsuario;
 import com.lucas.chamados.repository.ChamadoRepository;
 import com.lucas.chamados.repository.InteracaoRepository;
 import com.lucas.chamados.repository.UsuarioRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -185,6 +187,16 @@ public class ChamadoService {
         var interacoes = interacaoRepository.findByChamadoIdOrderByDataHoraAsc(id);
 
         return interacoes.stream().map(this::converterInteracaoEntityParaDTO).toList();
+
+
+    }
+
+    @Transactional
+    public void inativarChamado(Long id){
+        var chamado = chamadoRepository.findById(id).orElseThrow(() -> new ChamadoNaoEncontradoException(id));
+
+        chamado.setAtivo(false);
+        chamadoRepository.save(chamado);
 
 
     }

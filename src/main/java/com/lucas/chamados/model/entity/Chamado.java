@@ -6,6 +6,7 @@ import com.lucas.chamados.model.enums.TipoEnum;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "chamados")
+@SQLRestriction("ativo = true")
 public class Chamado {
 
     @Id
@@ -64,6 +66,9 @@ public class Chamado {
     @JoinColumn(name = "responsavel_id")
     private Usuario responsavel;
 
+    @Column
+    boolean ativo;
+
 
     public  Chamado (){}
 
@@ -76,6 +81,7 @@ public class Chamado {
         this.descricao = descricao;
         this.solicitante = solicitanteId;
     }
+
 
     public Long getId() {
         return id;
@@ -151,6 +157,10 @@ public class Chamado {
 
     public void setResponsavel(Usuario responsavelId) {
         this.responsavel = responsavelId;
+    }
+
+    public void setAtivo(boolean ativo){
+        this.ativo = ativo;
     }
 
 }

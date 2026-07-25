@@ -48,3 +48,6 @@ CREATE TABLE interacao (
                            data_hora               TIMESTAMP DEFAULT NOW(),
                            texto                   VARCHAR(500)
 );
+
+ALTER TABLE chamados
+ADD COLUMN ativo BOOLEAN NOT NULL DEFAULT true;

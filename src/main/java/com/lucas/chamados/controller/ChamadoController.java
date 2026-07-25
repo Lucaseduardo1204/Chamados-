@@ -3,6 +3,8 @@ package com.lucas.chamados.controller;
 import com.lucas.chamados.dto.*;
 import com.lucas.chamados.service.ChamadoService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,6 +64,13 @@ public class ChamadoController {
     @GetMapping("/{id}/interacoes")
     public List<InteracaoResponseDTO> listarInteracoes(@PathVariable Long id){
         return chamadoService.listarInteracoes(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> inativarChamado(@PathVariable Long id){
+
+        chamadoService.inativarChamado(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
