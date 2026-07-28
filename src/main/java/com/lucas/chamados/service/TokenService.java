@@ -25,4 +25,14 @@ public class TokenService {
                 .sign(algorithm);
     }
 
+
+    public String validartoken(String token){
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        return JWT.require(algorithm)
+                .withIssuer("chamados-api")
+                .build()
+                .verify(token)  //confere a assinatura, se for forjado ou ja expirado, lança exceção
+                .getSubject();  //devolve o email
+    }
+
 }
