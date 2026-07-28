@@ -4,10 +4,18 @@ import com.lucas.chamados.model.enums.Fundacao;
 import com.lucas.chamados.model.enums.TipoUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+// AO implementar um userDetails, a entity ganha outro papel, dados e credenciais. Os mpetodos chamves: getUsername()
+// getPassword(), getAuthorities(). é onde a identidade vira permissão, (conveniência, em outros prjetos é comum a separação)
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +39,9 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Fundacao fundacao;
+
+    @Column(nullable = false)
+    private String senha;
 
 
     // Exigido pelo jpa para executar o sql por traz dos panos, o framework precisa criar instâncias sem conhecer
@@ -82,6 +93,48 @@ public class Usuario {
         this.fundacao = fundacao;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    @Override
+    public String getUsername(){
+        return email;
+    }
+
+    @Override
+    public String getPassword(){
+        return senha;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+        return List.of(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
 
 
