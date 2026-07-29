@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,6 +99,16 @@ public class GlobalExceptionHandler {
         erros.put("erro", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erros);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> credenciaisInvalidas(BadCredentialsException ex){
+        Map<String, String> erros = new HashMap<>();
+
+        erros.put("erro", "Credenciais inválidas");
+        log.warn("Tentativa de login falhou");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erros);
+
     }
 
 

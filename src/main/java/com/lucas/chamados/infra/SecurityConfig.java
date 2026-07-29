@@ -2,8 +2,10 @@ package com.lucas.chamados.infra;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 //Configuração que une tudo, csrf.disable() /login público, resto autenticado e declara os beans PasswordEncoder e
 // Authentication manager
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -38,6 +41,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // .requestMatchers - a rota de login é pública
                         .requestMatchers("/login").permitAll()
+                        // Para Deletar qualquer coisa em /chamados precisa se ter o role ANALISTA, também há a forma
+                        // inserida e no  ChamadoController
+//                        .requestMatchers(HttpMethod.DELETE, "/chamados/**").hasRole("ANALISTA")
                         // todo o resto exige estar autenticado
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

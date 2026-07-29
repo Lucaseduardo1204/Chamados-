@@ -10,10 +10,8 @@ import com.lucas.chamados.model.enums.TipoUsuario;
 import com.lucas.chamados.repository.ChamadoRepository;
 import com.lucas.chamados.repository.InteracaoRepository;
 import com.lucas.chamados.repository.UsuarioRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -145,12 +143,13 @@ public class ChamadoService {
     }
 
     @Transactional
-    public InteracaoResponseDTO adicionarInteracao(Long idChamado, InteracaoRequestDTO interacao){
+    public InteracaoResponseDTO adicionarInteracao(Long idChamado, InteracaoRequestDTO interacao, Usuario autor){
         var chamado = chamadoRepository.findById(idChamado)
                 .orElseThrow(() -> new ChamadoNaoEncontradoException(idChamado));
 
-        var autor = usuarioRepository.findById(interacao.autorId())
-                .orElseThrow(() -> new UsuarioNaoEncontradoException(interacao.autorId()));
+        // retirado o método que busca o autor pois agora, ele vem nos parametros do controller que retorna o usuario
+        // autenticado
+
 
         boolean ehAnalista = autor.getTipoUsuario() == TipoUsuario.ANALISTA;
         boolean ehDono = chamado.getSolicitante().getId().equals(autor.getId());

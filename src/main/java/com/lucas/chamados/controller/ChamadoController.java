@@ -1,10 +1,13 @@
 package com.lucas.chamados.controller;
 
 import com.lucas.chamados.dto.*;
+import com.lucas.chamados.model.entity.Usuario;
 import com.lucas.chamados.service.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +41,7 @@ public class ChamadoController {
     }
 
 
+    @PreAuthorize("hasRole('ANALISTA')")
     @PatchMapping("/{id}/responsavel")
     // alterarResponsavel devolve um ChamadoResponseDTO por parametro ele recebe o id vindo da url e o id do novo
     // responsavel pelo requestbody
@@ -47,6 +51,7 @@ public class ChamadoController {
         return chamadoService.alterarResponsavel(idChamado, novoResponsavel);
     }
 
+    @PreAuthorize("hasRole('ANALISTA')")
     @PatchMapping("/{id}/situacao")
     public ChamadoResponseDTO alterarSituacao(@PathVariable("id") Long idChamado,
                                               @RequestBody @Valid AlterarSituacaoDTO novaSituacao){
@@ -56,16 +61,22 @@ public class ChamadoController {
 
     @PostMapping("/{id}/interacoes")
     public InteracaoResponseDTO adicionarInteracao(@PathVariable("id") Long chamadoId,
-                                                   @RequestBody @Valid InteracaoRequestDTO interacao){
+                                                   @RequestBody @Valid InteracaoRequestDTO interacao,
+                                                   //Ao criar o filtro JWT, quando validamos o token, inserimos o Usuario
+                                                   // no contexto do Spring (setAuthentication), o @AuthenticationPrincipal
+                                                   // puxa esse usuário de volta
+                                                   @AuthenticationPrincipal Usuario autor){
 
-        return chamadoService.adicionarInteracao(chamadoId, interacao);
+        return chamadoService.adicionarInteracao(chamadoId, interacao, autor);
     }
 
+    @PreAuthorize("hasRole('ANALISTA')")
     @GetMapping("/{id}/interacoes")
     public List<InteracaoResponseDTO> listarInteracoes(@PathVariable Long id){
         return chamadoService.listarInteracoes(id);
     }
 
+    @PreAuthorize("hasRole('ANALISTA')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> inativarChamado(@PathVariable Long id){
 
